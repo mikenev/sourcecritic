@@ -18,6 +18,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'HomeController@index');
     Route::get('/about', 'HomeController@about');
     
+    Route::get('/review', 'ReviewController@index');
+    
     Route::get('/json', 'HomeController@json');
     
     Route::get('/task', 'TaskController@index');
