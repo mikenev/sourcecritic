@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+}
+
+h1 {
+    margin: 0;
+}
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}
+
+.maincontent {
+    max-height: 75%;
+    min-height: 75%;
+    height: 75%;
+}
+
+.bottomcontainer {
+    height: 15%;
+}
+
+.fill {
+    height: 98%;
+    max-height: 98%;
+    margin: 0;
+}
+
+.panel-body {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    overflow-x: auto;
+}
