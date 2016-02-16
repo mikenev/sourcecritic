@@ -1,10 +1,13 @@
-var reviewApp = angular.module('reviewApp', ['reviewServices']);
+var reviewApp = angular.module('reviewApp', ['ngRoute', 'reviewServices']);
 
-reviewApp.controller('reviewController', ['$scope', 'Review', function ($scope, Review) {
+reviewApp.controller('reviewController',
+['$scope', '$routeParams', '$location', 'Review',
+function ($scope, $routeParams, $location, Review) {
   $scope.message = "hi";
+  $scope.route = $location.absUrl();
   
-  Review.get({phoneId: 'joemama'}, function(review) {
-     alert('hello'); 
+  Review.get({reviewId: 'joemama'}, function(review) {
+     // alert('hello'); 
   });
   
   $scope.newReview = () => {

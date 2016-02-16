@@ -15,12 +15,12 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/', 'HomeController@index');
-    Route::get('/about', 'HomeController@about');
+   
+    Route::get('/', 'ReviewController@index');
+    Route::get('/reviews/', 'ReviewController@index');
+    Route::get('/reviews/{id}', 'ReviewController@index');
     
-    Route::get('/review', 'ReviewController@index');
-    
-    Route::get('/json', 'HomeController@json');
+    Route::get('/api/reviews/{id}', 'ReviewController@getReview');
     
     Route::get('/task', 'TaskController@index');
     Route::post('/task', 'TaskController@postTask');

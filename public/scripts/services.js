@@ -2,7 +2,7 @@ var reviewServices = angular.module('reviewServices', ['ngResource']);
 
 reviewServices.factory('Review', ['$resource',
   function($resource){
-    return $resource('phones/:phoneId.json', {}, {
-      query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
+    return $resource('/api/reviews/:reviewId', {}, {
+      query: {method:'GET', params:{reviewId:'none'}, isArray:true}
     });
   }]);
