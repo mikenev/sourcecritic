@@ -21,6 +21,10 @@ h1 {
     height: 75%;
 }
 
+#new-review-modal {
+    display: none;
+}
+
 .bottomcontainer {
     height: 15%;
 }

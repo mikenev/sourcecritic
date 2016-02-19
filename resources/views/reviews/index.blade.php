@@ -19,4 +19,6 @@
     </div>
 </div>
 
+@include('reviews._newreview')
+
 @endsection
