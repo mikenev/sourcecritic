@@ -18,4 +18,13 @@ class ReviewController extends Controller
     {
         return response()->json(['name' => 'Test', 'state' => 'HI']);
     }
+    
+    public function newReview(Request $request)
+    {
+        $this->validate($request, [
+            'review_name' => 'required|max:255',
+        ]);
+        
+        return response()->json(['reviewId' => uniqid()]);
+    }
 }

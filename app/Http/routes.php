@@ -20,6 +20,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/reviews/', 'ReviewController@index');
     Route::get('/reviews/{id}', 'ReviewController@index');
     
+    Route::post('/reviews', 'ReviewController@newReview');
+    
+    
     Route::get('/api/reviews/{id}', 'ReviewController@getReview');
     
     Route::get('/task', 'TaskController@index');

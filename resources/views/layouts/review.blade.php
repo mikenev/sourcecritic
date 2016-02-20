@@ -50,7 +50,6 @@
             </div>
             </nav>
         </div>
-        @{{ route }} @{{ message }}
         @yield('content')
     </body>
 </html>
