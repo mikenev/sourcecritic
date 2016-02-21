@@ -23,8 +23,14 @@ class ReviewController extends Controller
     {
         $this->validate($request, [
             'review_name' => 'required|max:255',
+            'file' => 'required',
         ]);
         
-        return response()->json(['reviewId' => uniqid()]);
+        $name = $request->input('review_name');
+        $file = $request->file('file');
+               
+        $contents = file_get_contents($request->file('file')->getPathname());
+        
+        return response()->json(['reviewId' => uniqid(), 'reviewName' => $name, 'contents' => $contents]);
     }
 }

@@ -6,6 +6,10 @@ h1 {
     margin: 0;
 }
 
+#fileToUpload {
+    padding-top: 10px;
+}
+
 .row {
     margin-right: 0;
     margin-left: 0;
