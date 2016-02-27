@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\File;
+use App\Review;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +18,8 @@ class ReviewController extends Controller
     
     public function getReview($id) 
     {
-        return response()->json(['name' => 'Test', 'state' => 'HI']);
+        $review = Review::findOrFail($id);
+        return response()->json(['name' => $review->name, 'statusId' => $review->status_id]);
     }
     
     public function newReview(Request $request)
@@ -26,11 +29,25 @@ class ReviewController extends Controller
             'file' => 'required',
         ]);
         
+        $id = uniqid();
         $name = $request->input('review_name');
-        $file = $request->file('file');
-               
-        $contents = file_get_contents($request->file('file')->getPathname());
         
-        return response()->json(['reviewId' => uniqid(), 'reviewName' => $name, 'contents' => $contents]);
+        $file = $request->file('file');
+        $contents = file_get_contents($request->file('file')->getPathname());
+                
+        $review = new Review();
+        $review->id = $id;
+        $review->name = $name;
+        $review->save();
+        
+        $dbFile = new File();
+        $dbFile->review_id = $id;
+        $dbFile->contents = $contents;
+        $dbFile->type = $file->getMimeType();
+        $dbFile->name = $file->getClientOriginalName();
+        $dbFile->size = $file->getClientSize();
+        $dbFile->save();
+        
+        return response()->json(['reviewId' => $id, 'reviewName' => $name, 'contents' => $contents]);
     }
 }
