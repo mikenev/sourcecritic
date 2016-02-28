@@ -18,7 +18,7 @@ class CreateFilesTable extends Migration
             $table->string('review_id', 13);
             $table->string('type');
             $table->integer('size')->unsigned();
-            $table->text('contents');
+            $table->mediumText('contents');
             $table->timestamps();
 
             $table->foreign('review_id')->references('id')->on('reviews')->onDelete('cascade');

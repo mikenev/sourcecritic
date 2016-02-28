@@ -4,5 +4,11 @@
   </div>
   <div class="panel-body" id="fileContents">
     @{{message}}
+    <div class="line-number-column" ng-if="fileLines">
+        <span ng-repeat="line in fileLines track by $index">@{{$index}}<br /></span>
+    </div>
+    <div class="file-content-column" ng-if="fileLines">
+        <span class="file-content" ng-repeat="line in fileLines track by $index">@{{line}}<br /></span>
+    </div>
   </div>
 </div>

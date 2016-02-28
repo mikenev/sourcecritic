@@ -18,7 +18,10 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
   
   $scope.showFile = (file) => {
       var container = angular.element("#fileContents")[0];
-      container.textContent = file.contents;
+      var contents = file.contents;
+      var lines = contents.split(/\r?\n|\n/g);
+      $scope.message = "";
+      $scope.fileLines = lines;
   }
   
   var reviewId = null;

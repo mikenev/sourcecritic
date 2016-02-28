@@ -6,31 +6,23 @@ h1 {
     margin: 0;
 }
 
+.bottomcontainer {
+    height: 15%;
+}
+
 #fileToUpload {
     padding-top: 10px;
 }
 
-.row {
-    margin-right: 0;
-    margin-left: 0;
+.file-content {
+    border: none;
+    font-size: 12px;
+    white-space: pre;
+    display: block;
 }
 
-.navbar {
-    margin-bottom: 5px;
-}
-
-.maincontent {
-    max-height: 75%;
-    min-height: 75%;
-    height: 75%;
-}
-
-#new-review-modal {
-    display: none;
-}
-
-.bottomcontainer {
-    height: 15%;
+.file-content-column {
+    padding-left: 10px;
 }
 
 .fill {
@@ -39,8 +31,39 @@ h1 {
     margin: 0;
 }
 
+.line-number-column {
+    float: left;
+    background-color: lightgrey;
+    padding: 0 10px;
+    text-align: right;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.maincontent {
+    max-height: 75%;
+    min-height: 75%;
+    height: 75%;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}
+
+#new-review-modal {
+    display: none;
+}
+
 .panel-body {
     height: calc(100% - 40px);
     overflow-y: auto;
     overflow-x: auto;
+    padding: 0;
+}
+
+
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
 }

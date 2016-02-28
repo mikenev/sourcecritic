@@ -53,6 +53,6 @@ class ReviewController extends Controller
         $dbFile->size = $file->getClientSize();
         $dbFile->save();
         
-        return response()->json(['reviewId' => $id, 'reviewName' => $name, 'contents' => $contents]);
+        return redirect('reviews/' . $id);
     }
 }
