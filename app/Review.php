@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
+    public $incrementing = false;
+    
     public function users()
     {
-        return $this->belongsToMany('User');
+        return $this->belongsToMany('App\User');
     }
     
     public function files()
     {
-        return $this->hasMany('File');
+        return $this->hasMany('App\File', 'review_id', 'id');
     }
 }

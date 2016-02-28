@@ -8,6 +8,6 @@ class User extends Model
 {
     public function reviews()
     {
-        return $this->belongsToMany('Review');
+        return $this->belongsToMany('App\Review');
     }
 }

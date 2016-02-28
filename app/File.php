@@ -8,11 +8,11 @@ class File extends Model
 {
     public function comments()
     {
-        return $this->hasMany('Comment');
+        return $this->hasMany('App\Comment');
     }
     
     public function reviews()
     {
-        return $this->belongsTo('Review');
+        return $this->belongsTo('App\Review', 'review_id');
     }
 }

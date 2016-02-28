@@ -10,11 +10,11 @@ class Comment extends Model
     
     public function file()
     {
-        return $this->belongsTo('File');
+        return $this->belongsTo('App\File');
     }
     
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 }

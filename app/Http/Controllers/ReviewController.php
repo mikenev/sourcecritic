@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 use App\File;
 use App\Review;
@@ -19,7 +20,11 @@ class ReviewController extends Controller
     public function getReview($id) 
     {
         $review = Review::findOrFail($id);
-        return response()->json(['name' => $review->name, 'statusId' => $review->status_id]);
+        
+        return response()->json([
+            'name' => $review->name,
+            'statusId' => $review->status_id,
+            'files' => $review->files->toArray()]);
     }
     
     public function newReview(Request $request)

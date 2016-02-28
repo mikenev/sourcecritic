@@ -4,8 +4,7 @@
   </div>
   <div class="panel-body">
     <ul>
-        <li>File 1</li>
-        <li>File 2</li>
+       <li ng-repeat="file in files" ng-click="showFile(file)">@{{file.name}}</li> 
     </ul>
   </div>
 </div>
