@@ -16,12 +16,22 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
       modal.style.display = 'none';
   };
   
-  $scope.showFile = (file) => {
-      var container = angular.element("#fileContents")[0];
+  $scope.showFile = (file, $event) => {
       var contents = file.contents;
       var lines = contents.split(/\r?\n|\n/g);
       $scope.message = "";
       $scope.fileLines = lines;
+      
+      if ($event && $event.target) {
+        var lis = angular.element('#file-list').children();
+        
+        for (var i = 0; i < lis.length; i++) {
+            var className = lis[i].className.replace('file-list-selected', '');
+            lis[i].className = className;
+        }
+          
+        $event.target.className += " file-list-selected";        
+      }
   }
   
   var reviewId = null;
