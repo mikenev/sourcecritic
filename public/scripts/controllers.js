@@ -17,6 +17,10 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
   };
   
   $scope.handleMouseUp = (event) => {
+      if (event.target.id != "file-contents") {
+          return;
+      }
+      
       var sel = window.getSelection();
       if (!sel.isCollapsed) {
           var range = sel.getRangeAt(0);
@@ -26,6 +30,14 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
           document.execCommand("HiliteColor", false, "yellow");
           sel.removeAllRanges();
           document.designMode = "off";
+          
+          var div = document.createElement('div');
+          div.style.top = event.offsetY + 20 + 'px';
+          div.style.left = event.offsetX - 30 + 'px';
+          div.className = "file-comment";
+          div.contentEditable = "true";
+          angular.element("#file-contents").append(div);
+          div.focus();
       }
   }
   

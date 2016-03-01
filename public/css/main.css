@@ -14,10 +14,44 @@ h1 {
     padding-top: 10px;
 }
 
+.file-comment {
+    background-color: aliceblue;
+    border: 2px solid black;
+    border-radius: 6px;
+    position: absolute;
+    padding: 15px;
+
+}
+
+.file-comment:after, .file-comment:before {
+	bottom: 100%;
+	left: 20px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.file-comment:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: aliceblue;
+	border-width: 15px;
+	margin-left: -15px;
+}
+.file-comment:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: #000000;
+	border-width: 18px;
+	margin-left: -18px;
+}
+
 .file-content-column {
     padding-left: 10px;
     white-space: pre;
     font-size: 12px;
+    position: relative;
 }
 
 .file-list {
