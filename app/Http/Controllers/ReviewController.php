@@ -83,4 +83,10 @@ class ReviewController extends Controller
         
         return redirect('reviews/' . $id);
     }
+    
+    public function postComment(Request $request) {
+        
+        
+        
+    }
 }

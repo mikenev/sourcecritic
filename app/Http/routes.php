@@ -21,9 +21,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/reviews/{id}', 'ReviewController@index');
     
     Route::post('/api/reviews', 'ReviewController@newReview');
+    Route::post('/api/reviews/comments', 'ReviewController@postComment');
     Route::get('/api/reviews/{id}', 'ReviewController@getReview');
-    
-    Route::get('/task', 'TaskController@index');
-    Route::post('/task', 'TaskController@postTask');
-    Route::delete('/task/{task}', 'TaskController@deleteTask');
 });

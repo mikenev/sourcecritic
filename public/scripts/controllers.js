@@ -1,8 +1,8 @@
 var reviewApp = angular.module('reviewApp', ['ngRoute', 'reviewServices']);
 
 reviewApp.controller('reviewController',
-['$scope', '$routeParams', '$location', '$window', '$http', 'Review',
-function ($scope, $routeParams, $location, $window, $http, Review) {
+['$scope', '$routeParams', '$location', '$window', '$http', '$compile', 'Review', 'Comment',
+function ($scope, $routeParams, $location, $window, $http, $compile, Review, Comment) {
     
   $scope.reviewId = '';
   
@@ -10,6 +10,19 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
   
   $scope.newReview = () => {
       modal.style.display = 'block';
+  };
+  
+  $scope.cancelPost = (event) => {
+      var parent = $(event.target).parents(".file-comment")[0].parentElement;
+      parent.lastChild.remove();
+      var content = "";
+      
+      for (var i = 0; i < parent.childNodes.length; i++) {
+          content += parent.childNodes[i].nodeValue;
+      }
+      
+      var escaped = $("<div>").text(content).html();
+      $(parent).replaceWith(escaped);
   };
   
   $scope.closeNewReviewModal = (event) => {
@@ -24,20 +37,37 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
       var sel = window.getSelection();
       if (!sel.isCollapsed) {
           var range = sel.getRangeAt(0);
+          var startIndex = $scope.contents.indexOf(range.startContainer.textContent);
+          var startOffset = range.startOffset;
+          var endOffset = range.endOffset;
+          var id = new Date().getTime();
           sel.removeAllRanges();
           document.designMode = "on";
           sel.addRange(range);
           document.execCommand("HiliteColor", false, "yellow");
+          sel.focusNode.parentNode.id = id;
           sel.removeAllRanges();
           document.designMode = "off";
           
-          var div = document.createElement('div');
+          var tooltipElement = angular.element("#comment-tooltip")[0];
+          var div = angular.copy(tooltipElement);
           div.style.top = event.offsetY + 20 + 'px';
           div.style.left = event.offsetX - 30 + 'px';
-          div.className = "file-comment";
+          div.id = "";
           div.contentEditable = "true";
-          angular.element("#file-contents").append(div);
+          angular.element("#" + id).append($compile(div)($scope));
           div.focus();
+          
+          Comment.save(
+              {
+                  reviewId: $scope.reviewId,
+                  start: startIndex + startOffset,
+                  end: startIndex + endOffset,
+                  content: $scope.contents.substr(startIndex + startOffset, endOffset - startOffset)
+              },
+              function(result) {
+                  
+              });
       }
   }
   

@@ -10,3 +10,11 @@
     <div class="file-content-column" id="file-contents" ng-if="contents" ng-bind="contents"></div>
   </div>
 </div>
+
+<div id="comment-tooltip" class="file-comment">
+    &nbsp;
+    <div contentEditable="false">
+        <a href="#">Save</a>
+        <a href="#" ng-click="cancelPost($event)">Cancel</a>
+    </div>
+</div>
