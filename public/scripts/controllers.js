@@ -16,11 +16,31 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
       modal.style.display = 'none';
   };
   
+  $scope.handleMouseUp = (event) => {
+      var sel = window.getSelection();
+      if (!sel.isCollapsed) {
+          var range = sel.getRangeAt(0);
+          sel.removeAllRanges();
+          document.designMode = "on";
+          sel.addRange(range);
+          document.execCommand("HiliteColor", false, "yellow");
+          sel.removeAllRanges();
+          document.designMode = "off";
+      }
+  }
+  
   $scope.showFile = (file, $event) => {
       var contents = file.contents;
       var lines = contents.split(/\r?\n|\n/g);
+      var fileLines = [];
+      
+      for (var i = 0; i < lines.length; i++) {
+          fileLines.push(i);
+      }
+      
       $scope.message = "";
-      $scope.fileLines = lines;
+      $scope.contents = contents;
+      $scope.fileLines = fileLines;
       
       if ($event && $event.target) {
         var lis = angular.element('#file-list').children();
@@ -54,4 +74,6 @@ function ($scope, $routeParams, $location, $window, $http, Review) {
   } else {
       $scope.message = "Nothing to show. Please create a review.";
   }
+  
+  
 }]);

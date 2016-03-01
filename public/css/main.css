@@ -14,15 +14,10 @@ h1 {
     padding-top: 10px;
 }
 
-.file-content {
-    border: none;
-    font-size: 12px;
-    white-space: pre;
-    display: block;
-}
-
 .file-content-column {
     padding-left: 10px;
+    white-space: pre;
+    font-size: 12px;
 }
 
 .file-list {
