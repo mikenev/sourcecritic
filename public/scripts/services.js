@@ -10,6 +10,6 @@ reviewServices.factory('Review', ['$resource',
 reviewServices.factory('Comment', ['$resource',
   function($resource){
     return $resource('/api/reviews/comments', {}, {
-      save: {method:'POST', params:{reviewId:'none'}, isArray:true}
+      save: {method:'POST', params:{reviewId:'none'}, isArray:false}
     });
 }]);

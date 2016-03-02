@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
+use App\Comment;
 use App\File;
 use App\Review;
 use App\Http\Requests;
@@ -20,11 +21,19 @@ class ReviewController extends Controller
     public function getReview($id) 
     {
         $review = Review::findOrFail($id);
+        $comments = array();
+        
+        foreach ($review->files as $file) {
+            foreach ($file->comments as $comment) {
+                array_push($comments, $comment);
+            }
+        }
         
         return response()->json([
             'name' => $review->name,
             'statusId' => $review->status_id,
-            'files' => $review->files->toArray()]);
+            'files' => $review->files->toArray(),
+            'comments' => $comments]);
     }
     
     public function newReview(Request $request)
@@ -85,8 +94,21 @@ class ReviewController extends Controller
     }
     
     public function postComment(Request $request) {
+        $this->validate($request, [
+            'fileId' => 'required|integer',
+            'start' => 'required|integer',
+            'end' => 'required|integer',
+            'content' => 'required|max:256|string'
+        ]);
         
+        $comment = new Comment();
+        $comment->file_id = $request->input('fileId');
+        $comment->start = $request->input('start');
+        $comment->end = $request->input('end');
+        $comment->content = $request->input('content');
         
+        $comment->save();
         
+        return($comment->toJson());
     }
 }

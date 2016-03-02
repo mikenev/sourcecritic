@@ -7,6 +7,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
   $scope.reviewId = '';
   
   var modal = angular.element("#new-review-modal")[0];
+  var highlightLocations = [];
   
   $scope.newReview = () => {
       modal.style.display = 'block';
@@ -58,18 +59,46 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
           angular.element("#" + id).append($compile(div)($scope));
           div.focus();
           
-          Comment.save(
-              {
-                  reviewId: $scope.reviewId,
-                  start: startIndex + startOffset,
-                  end: startIndex + endOffset,
-                  content: $scope.contents.substr(startIndex + startOffset, endOffset - startOffset)
-              },
-              function(result) {
-                  
-              });
+          var highlight = {
+              start: startIndex + startOffset,
+              end: startIndex + endOffset,
+              id: id
+          }
+          
+          highlightLocations.push(highlight);
       }
   }
+  
+  $scope.savePost = (event) => {
+      if (! $scope.fileId) {
+          return;
+      }
+      
+      var highlight = null;
+      var comment = event.target.parentNode.parentNode.firstChild.textContent;
+      var parent = $(event.target).parents(".file-comment")[0].parentElement;
+      var id = parent.id;
+      
+      for (var i = 0; i < highlightLocations.length; i++) {
+          if (highlightLocations[i].id == id) {
+              highlight = highlightLocations[i];
+              break;
+          }
+      }
+      
+      Comment.save(
+          {
+              reviewId: $scope.reviewId,
+              fileId: $scope.fileId,
+              start: highlight.start,
+              end: highlight.end,
+              content: comment
+          },
+          function (result) {
+              var a = result;
+              
+          });
+  };
   
   $scope.showFile = (file, $event) => {
       var contents = file.contents;
@@ -83,6 +112,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
       $scope.message = "";
       $scope.contents = contents;
       $scope.fileLines = fileLines;
+      $scope.fileId = file.id;
       
       if ($event && $event.target) {
         var lis = angular.element('#file-list').children();
@@ -107,6 +137,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
       
         Review.get({reviewId: reviewId}, function(review) {
             $scope.files = review.files;
+            $scope.comments = review.comments;
             $scope.reviewName = review.name;
             
             if (review.files && review.files.length > 0) {
