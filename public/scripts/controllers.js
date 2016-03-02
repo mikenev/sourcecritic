@@ -1,19 +1,19 @@
 var reviewApp = angular.module('reviewApp', ['ngRoute', 'reviewServices']);
 
 reviewApp.controller('reviewController',
-['$scope', '$routeParams', '$location', '$window', '$http', '$compile', 'Review', 'Comment',
-function ($scope, $routeParams, $location, $window, $http, $compile, Review, Comment) {
+['$scope', '$routeParams', '$location', '$window', '$http', '$compile', '$timeout', 'Review', 'Comment',
+function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, Review, Comment) {
     
   $scope.reviewId = '';
   
   var modal = angular.element("#new-review-modal")[0];
   var highlightLocations = [];
   
-  $scope.newReview = () => {
+  $scope.newReview = function() {
       modal.style.display = 'block';
   };
   
-  $scope.cancelPost = (event) => {
+  $scope.cancelPost = function(event) {
       var parent = $(event.target).parents(".file-comment")[0].parentElement;
       parent.lastChild.remove();
       var content = "";
@@ -26,11 +26,11 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
       $(parent).replaceWith(escaped);
   };
   
-  $scope.closeNewReviewModal = (event) => {
+  $scope.closeNewReviewModal = function(event) {
       modal.style.display = 'none';
   };
   
-  $scope.handleMouseUp = (event) => {
+  $scope.handleMouseUp = function(event) {
       if (event.target.id != "file-contents") {
           return;
       }
@@ -69,7 +69,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
       }
   }
   
-  $scope.savePost = (event) => {
+  $scope.savePost = function(event) {
       if (! $scope.fileId) {
           return;
       }
@@ -100,7 +100,53 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
           });
   };
   
-  $scope.showFile = (file, $event) => {
+  $scope.showComment = function(comment) {
+      var range = document.createRange();
+      var contentElement = angular.element("#file-contents")[0];
+      var startNode = contentElement.childNodes[0];
+      range.setStart(startNode, comment.start);
+      range.setEnd(startNode, comment.end);
+      
+          var id = new Date().getTime();
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          document.designMode = "on";
+          sel.addRange(range);
+          document.execCommand("HiliteColor", false, "yellow");
+          sel.focusNode.parentNode.id = id;
+          sel.removeAllRanges();
+          document.designMode = "off";
+          
+          var parentElement = angular.element("#" + id)[0];
+          
+          var tooltipElement = angular.element("#comment-tooltip")[0];
+          var div = angular.copy(tooltipElement);
+          div.style.left = parentElement.offsetLeft + 'px';
+          div.style.top = parentElement.offsetTop + 23 + 'px';
+          div.id = "";
+          div.contentEditable = "false";
+          div.textContent = comment.content;
+          angular.element("#" + id).append($compile(div)($scope));
+  }
+  
+  $scope.showComments = function() {
+      var fileId = $scope.fileId;
+      var fileComments = new Array();
+      
+      for (var i = 0; i < $scope.comments.length; i++) {
+          if (fileId == $scope.comments[i].file_id) {
+            fileComments.push($scope.comments[i]);  
+          }
+      }
+      
+      var sorted = fileComments.sort(function(a, b) { return a.end - b.end });
+      
+      for (var i = sorted.length - 1; i >= 0; i--) {
+          $scope.showComment(sorted[i]);
+      }
+  };
+  
+  $scope.showFile = function(file, $event) {
       var contents = file.contents;
       var lines = contents.split(/\r?\n|\n/g);
       var fileLines = [];
@@ -113,6 +159,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
       $scope.contents = contents;
       $scope.fileLines = fileLines;
       $scope.fileId = file.id;
+      $scope.fileName = file.name;
       
       if ($event && $event.target) {
         var lis = angular.element('#file-list').children();
@@ -121,9 +168,11 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
             var className = lis[i].className.replace('file-list-selected', '');
             lis[i].className = className;
         }
-          
+        
         $event.target.className += " file-list-selected";        
       }
+      
+      $timeout($scope.showComments);
   }
   
   var reviewId = null;
@@ -147,6 +196,5 @@ function ($scope, $routeParams, $location, $window, $http, $compile, Review, Com
   } else {
       $scope.message = "Nothing to show. Please create a review.";
   }
-  
-  
+
 }]);
