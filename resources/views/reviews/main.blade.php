@@ -11,8 +11,13 @@
   </div>
 </div>
 
-<div id="comment-tooltip" class="file-comment">&nbsp;<div contentEditable="false">
+<div id="comment-new" class="file-comment">&nbsp;<div contentEditable="false">
         <a href="#" ng-click="savePost($event)">Save</a>
         <a href="#" ng-click="cancelPost($event)">Cancel</a>
+    </div>
+</div>
+
+<div id="comment-saved" class="file-comment">&nbsp;<div contentEditable="false">
+        <a href="#" ng-click="minimizeComment($event)" class="comment-button">Hide</a>
     </div>
 </div>

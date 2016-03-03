@@ -50,7 +50,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
           sel.removeAllRanges();
           document.designMode = "off";
           
-          var tooltipElement = angular.element("#comment-tooltip")[0];
+          var tooltipElement = angular.element("#comment-new")[0];
           var div = angular.copy(tooltipElement);
           div.style.top = event.offsetY + 20 + 'px';
           div.style.left = event.offsetX - 30 + 'px';
@@ -67,6 +67,29 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
           
           highlightLocations.push(highlight);
       }
+  }
+  
+  $scope.minimizeComment = function(event) {
+      var commentElement = event.target.parentElement.parentElement;
+      commentElement.style.display = "none";
+      
+      var highlightElement = commentElement.parentElement;
+      highlightElement.onclick = $scope.maximizeComment;
+      highlightElement.className = "pointer";
+      highlightElement.title = "Click to show comment.";
+  }
+  
+  $scope.maximizeComment = function(event) {
+      if (! event.target.id) {
+          return;
+      }
+      
+      var element = $('#' + event.target.id);
+      var commentElement = element.children(".file-comment")[0];
+      commentElement.style.display = "block";
+      element.unbind('onclick');
+      element.removeClass("pointer");
+      element.removeAttr("title");
   }
   
   $scope.savePost = function(event) {
@@ -101,32 +124,31 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
   };
   
   $scope.showComment = function(comment) {
-      var range = document.createRange();
-      var contentElement = angular.element("#file-contents")[0];
-      var startNode = contentElement.childNodes[0];
-      range.setStart(startNode, comment.start);
-      range.setEnd(startNode, comment.end);
+        var range = document.createRange();
+        var contentElement = angular.element("#file-contents")[0];
+        var startNode = contentElement.childNodes[0];
+        range.setStart(startNode, comment.start);
+        range.setEnd(startNode, comment.end);
       
-          var id = new Date().getTime();
-          var sel = window.getSelection();
-          sel.removeAllRanges();
-          document.designMode = "on";
-          sel.addRange(range);
-          document.execCommand("HiliteColor", false, "yellow");
-          sel.focusNode.parentNode.id = id;
-          sel.removeAllRanges();
-          document.designMode = "off";
-          
-          var parentElement = angular.element("#" + id)[0];
-          
-          var tooltipElement = angular.element("#comment-tooltip")[0];
-          var div = angular.copy(tooltipElement);
-          div.style.left = parentElement.offsetLeft + 'px';
-          div.style.top = parentElement.offsetTop + 23 + 'px';
-          div.id = "";
-          div.contentEditable = "false";
-          div.textContent = comment.content;
-          angular.element("#" + id).append($compile(div)($scope));
+        var id = new Date().getTime();
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        document.designMode = "on";
+        sel.addRange(range);
+        document.execCommand("HiliteColor", false, "yellow");
+        sel.focusNode.parentNode.id = id;
+        sel.removeAllRanges();
+        document.designMode = "off";
+
+        var parentElement = angular.element("#" + id)[0];
+
+        var tooltipElement = angular.element("#comment-saved")[0];
+        var div = angular.copy(tooltipElement);
+        div.style.left = parentElement.offsetLeft + 'px';
+        div.style.top = parentElement.offsetTop + 23 + 'px';
+        div.id = "";
+        div.firstChild.textContent = comment.content;
+        angular.element("#" + id).append($compile(div)($scope));
   }
   
   $scope.showComments = function() {
