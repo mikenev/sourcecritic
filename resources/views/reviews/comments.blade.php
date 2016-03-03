@@ -3,6 +3,11 @@
     <h3 class="panel-title">Comments</h3>
   </div>
   <div class="panel-body">
-    I am the comment box.   
+      <ul class="comment-list">
+          <li
+          ng-repeat="comment in comments track by $index"
+          ng-click="goToComment(comment)">@{{comment.content}}
+          </li>
+      </ul>
   </div>
 </div>

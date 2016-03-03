@@ -14,6 +14,14 @@ h1 {
     float: right;
 }
 
+.comment-list {
+    list-style: circle;
+}
+
+.comment-list > li {
+    cursor: pointer;
+}
+
 .comment-minimized {
     position: absolute;
     padding: 0;

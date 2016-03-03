@@ -30,6 +30,19 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
       modal.style.display = 'none';
   };
   
+  $scope.goToComment = function (comment) {
+      // $("#fileContents")[0].scrollTop = $("#c1456990502164").offset().top - 100;
+      
+      for (var i = 0; i < $scope.files.length; i++) {
+          if ($scope.files[i].id == comment.file_id) {
+              $scope.showFile($scope.files[i]);
+          }
+      }
+      
+      var a = 1 + 1;
+      
+  }
+  
   $scope.handleMouseUp = function(event) {
       if (event.target.id != "file-contents") {
           return;
@@ -41,7 +54,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
           var startIndex = $scope.contents.indexOf(range.startContainer.textContent);
           var startOffset = range.startOffset;
           var endOffset = range.endOffset;
-          var id = new Date().getTime();
+          var id = "c" + (new Date().getTime());
           sel.removeAllRanges();
           document.designMode = "on";
           sel.addRange(range);
@@ -130,7 +143,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
         range.setStart(startNode, comment.start);
         range.setEnd(startNode, comment.end);
       
-        var id = new Date().getTime();
+        var id = "c" + (new Date().getTime());
         var sel = window.getSelection();
         sel.removeAllRanges();
         document.designMode = "on";
