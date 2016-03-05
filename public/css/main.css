@@ -89,7 +89,7 @@ h1 {
 
 .file-list > li {
     cursor: pointer;
-    float: left;
+    display: table-row;
 }
 
 .file-list > li:hover {
