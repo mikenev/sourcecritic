@@ -6,7 +6,7 @@
       <ul class="comment-list">
           <li
           ng-repeat="comment in comments track by $index"
-          ng-click="goToComment(comment)">@{{comment.content}}
+          ng-click="goToComment(comment)">@{{getFileName(comment.file_id);}} - @{{comment.content}}
           </li>
       </ul>
   </div>

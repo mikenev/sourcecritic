@@ -8,40 +8,47 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
   
   var modal = angular.element("#new-review-modal")[0];
   var highlightLocations = [];
+  var commentElementMap = [];
+  var fileIdNameMap = [];
   
-  $scope.newReview = function() {
-      modal.style.display = 'block';
-  };
+    $scope.newReview = function() {
+        modal.style.display = 'block';
+    };
   
-  $scope.cancelPost = function(event) {
-      var parent = $(event.target).parents(".file-comment")[0].parentElement;
-      parent.lastChild.remove();
-      var content = "";
-      
-      for (var i = 0; i < parent.childNodes.length; i++) {
-          content += parent.childNodes[i].nodeValue;
-      }
-      
-      var escaped = $("<div>").text(content).html();
-      $(parent).replaceWith(escaped);
-  };
+    $scope.cancelPost = function(event) {
+        var parent = $(event.target).parents(".file-comment")[0].parentElement;
+        parent.lastChild.remove();
+        var content = "";
+
+        for (var i = 0; i < parent.childNodes.length; i++) {
+            content += parent.childNodes[i].nodeValue;
+        }
+
+        var escaped = $("<div>").text(content).html();
+        $(parent).replaceWith(escaped);
+    };
   
-  $scope.closeNewReviewModal = function(event) {
-      modal.style.display = 'none';
-  };
+    $scope.closeNewReviewModal = function(event) {
+        modal.style.display = 'none';
+    };
+    
+    $scope.getFileName = function(fileId) {
+        return fileIdNameMap[fileId];
+    }
   
-  $scope.goToComment = function (comment) {
-      // $("#fileContents")[0].scrollTop = $("#c1456990502164").offset().top - 100;
+    $scope.goToComment = function (comment) {
+        $scope.currentComment = comment;
       
-      for (var i = 0; i < $scope.files.length; i++) {
-          if ($scope.files[i].id == comment.file_id) {
-              $scope.showFile($scope.files[i]);
-          }
-      }
-      
-      var a = 1 + 1;
-      
-  }
+        if ($scope.fileId == comment.file_id) {
+            $scope.scrollToComment();
+        } else {
+            for (var i = 0; i < $scope.files.length; i++) {
+                if ($scope.files[i].id == comment.file_id) {
+                    $scope.showFile($scope.files[i]);
+                }
+            }
+        }
+    }
   
   $scope.handleMouseUp = function(event) {
       if (event.target.id != "file-contents") {
@@ -136,6 +143,15 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
           });
   };
   
+  $scope.scrollToComment = function() {
+      if ($scope.currentComment) {
+          $("#fileContents")[0].scrollTop = 0;
+          var id = commentElementMap[$scope.currentComment.id];
+          $("#fileContents")[0].scrollTop = $("#" + id).offset().top - 100;
+          $scope.currentComment = null;
+      }
+  };
+  
   $scope.showComment = function(comment) {
         var range = document.createRange();
         var contentElement = angular.element("#file-contents")[0];
@@ -162,6 +178,8 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
         div.id = "";
         div.firstChild.textContent = comment.content;
         angular.element("#" + id).append($compile(div)($scope));
+        
+        commentElementMap[comment.id] = id;
   }
   
   $scope.showComments = function() {
@@ -179,36 +197,38 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
       for (var i = sorted.length - 1; i >= 0; i--) {
           $scope.showComment(sorted[i]);
       }
+      
+      $scope.scrollToComment();
   };
   
-  $scope.showFile = function(file, $event) {
-      var contents = file.contents;
-      var lines = contents.split(/\r?\n|\n/g);
-      var fileLines = [];
-      
-      for (var i = 0; i < lines.length; i++) {
-          fileLines.push(i);
-      }
-      
-      $scope.message = "";
-      $scope.contents = contents;
-      $scope.fileLines = fileLines;
-      $scope.fileId = file.id;
-      $scope.fileName = file.name;
-      
-      if ($event && $event.target) {
-        var lis = angular.element('#file-list').children();
+    $scope.showFile = function(file, $event) {
+        var contents = file.contents;
+        var lines = contents.split(/\r?\n|\n/g);
+        var fileLines = [];
         
+        for (var i = 0; i < lines.length; i++) {
+            fileLines.push(i);
+        }
+        
+        $scope.message = "";
+        $scope.contents = contents;
+        $scope.fileLines = fileLines;
+        $scope.fileId = file.id;
+        $scope.fileName = file.name;
+      
+        var lis = angular.element('#file-list').children();
+
         for (var i = 0; i < lis.length; i++) {
             var className = lis[i].className.replace('file-list-selected', '');
             lis[i].className = className;
+            
+            if (lis[i].textContent == file.name) {
+                lis[i].className += " file-list-selected";        
+            }
         }
-        
-        $event.target.className += " file-list-selected";        
-      }
       
-      $timeout($scope.showComments);
-  }
+        $timeout($scope.showComments);
+    }
   
   var reviewId = null;
   var route = $location.absUrl();
@@ -223,6 +243,10 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
             $scope.files = review.files;
             $scope.comments = review.comments;
             $scope.reviewName = review.name;
+
+            for (var i = 0; i < review.files.length; i++) {
+                fileIdNameMap[review.files[i].id] = review.files[i].name;
+            }
             
             if (review.files && review.files.length > 0) {
                 $scope.showFile(review.files[0]);

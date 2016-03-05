@@ -3,6 +3,6 @@
     <h3 class="panel-title">Participants</h3>
   </div>
   <div class="panel-body">
-    I am the participants
+    TODO
   </div>
 </div>

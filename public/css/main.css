@@ -45,7 +45,6 @@ h1 {
     padding: 6px;
     min-width: 44px;
     white-space: initial;
-    outline: none;
 }
 
 .file-comment:after, .file-comment:before {
