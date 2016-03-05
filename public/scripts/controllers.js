@@ -206,7 +206,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
         var lines = contents.split(/\r?\n|\n/g);
         var fileLines = [];
         
-        for (var i = 0; i < lines.length; i++) {
+        for (var i = 1; i <= lines.length; i++) {
             fileLines.push(i);
         }
         

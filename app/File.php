@@ -12,6 +12,25 @@ class File extends Model
         'text/x-php',
     );
     
+    public static $InvalidFileNames = array(
+        'nbproject/', // netbeans project files
+        '__macosx/',  // mac .zip remnants
+        '._'          // mac temp file 
+    );
+    
+    public static function IsValidNameName($name) {
+        $lcName = strtolower($name);
+        $valid = true;
+        
+        foreach (File::$InvalidFileNames as $invalidName) {
+            if (strpos($lcName, $invalidName) !== false) {
+                $valid = false;
+            }
+        }
+        
+        return $valid;
+    }
+    
     public function comments()
     {
         return $this->hasMany('App\Comment');
@@ -21,4 +40,5 @@ class File extends Model
     {
         return $this->belongsTo('App\Review', 'review_id');
     }
+    
 }

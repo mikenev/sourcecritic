@@ -65,7 +65,8 @@ class ReviewController extends Controller
                         $finfo = new \finfo(FILEINFO_MIME_TYPE);
                         $type = $finfo->buffer($contents);
                         
-                        if (in_array($type, File::$AcceptTypes)) {
+                        if (in_array($type, File::$AcceptTypes) &&
+                            File::IsValidNameName($name)) {
                             $dbFile = new File();
                             $dbFile->review_id = $id;
                             $dbFile->contents = $contents;
