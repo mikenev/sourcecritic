@@ -5,6 +5,7 @@ reviewApp.controller('reviewController',
 function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, Review, Comment) {
     
   $scope.reviewId = '';
+  $scope.reviewCompleted = false;
   
   var modal = angular.element("#new-review-modal")[0];
   var highlightLocations = [];
@@ -32,6 +33,21 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
         modal.style.display = 'none';
     };
     
+    $scope.completeReview = function() {
+        if ($scope.reviewId) {
+            Review.update(
+                {
+                    reviewId: $scope.reviewId
+                },
+                {
+                    statusId: 1
+                },
+                function (data) {
+                    $scope.reviewCompleted = data.status_id == 1;
+                });
+        }
+    }
+    
     $scope.getFileName = function(fileId) {
         return fileIdNameMap[fileId];
     }
@@ -51,7 +67,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
     }
   
   $scope.handleMouseUp = function(event) {
-      if (event.target.id != "file-contents") {
+      if (event.target.id != "file-contents" || $scope.reviewCompleted) {
           return;
       }
       
@@ -138,8 +154,8 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
               content: comment
           },
           function (result) {
-              var a = result;
-              
+              $scope.comments.push(result);
+              // $timeout($scope.showComment(result));
           });
   };
   
@@ -243,6 +259,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
             $scope.files = review.files;
             $scope.comments = review.comments;
             $scope.reviewName = review.name;
+            $scope.reviewCompleted = (review.statusId != 0);
 
             for (var i = 0; i < review.files.length; i++) {
                 fileIdNameMap[review.files[i].id] = review.files[i].name;

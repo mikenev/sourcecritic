@@ -4,5 +4,8 @@
   </div>
   <div class="panel-body">
     TODO
+    <div class="review-actions">
+        <button ng-click="completeReview()" ng-if="!reviewCompleted">Complete Review</button>
+    </div>
   </div>
 </div>

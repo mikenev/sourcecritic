@@ -112,4 +112,16 @@ class ReviewController extends Controller
         
         return($comment->toJson());
     }
+    
+    public function updateReview(Request $request, $id) {
+        $this->validate($request, [
+            'statusId' => 'sometimes|integer'
+        ]);
+        
+        $review = Review::findOrFail($id);
+        $review->status_id = $request->input('statusId');
+        $review->save();
+        
+        return($review->toJson());
+    }
 }

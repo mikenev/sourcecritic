@@ -134,6 +134,7 @@ h1 {
     overflow-y: auto;
     overflow-x: auto;
     padding: 0;
+    position: relative;
 }
 
 .pointer {
@@ -142,6 +143,11 @@ h1 {
 
 .pointer:hover {
     background-color: orange !important;
+}
+
+.review-actions {
+    position: absolute;
+    bottom: 0;
 }
 
 .row {

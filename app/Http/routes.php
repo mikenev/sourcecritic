@@ -23,4 +23,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/api/reviews', 'ReviewController@newReview');
     Route::post('/api/reviews/comments', 'ReviewController@postComment');
     Route::get('/api/reviews/{id}', 'ReviewController@getReview');
+    Route::patch('/api/reviews/{id}', 'ReviewController@updateReview');
 });
