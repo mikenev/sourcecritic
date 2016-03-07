@@ -109,7 +109,7 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
       
       var highlightElement = commentElement.parentElement;
       highlightElement.onclick = $scope.maximizeComment;
-      highlightElement.className = "pointer";
+      highlightElement.className = "hilited pointer";
       highlightElement.title = "Click to show comment.";
   }
   
