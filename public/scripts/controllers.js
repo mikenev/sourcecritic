@@ -78,13 +78,11 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
           var startOffset = range.startOffset;
           var endOffset = range.endOffset;
           var id = "c" + (new Date().getTime());
-          sel.removeAllRanges();
-          document.designMode = "on";
-          sel.addRange(range);
-          document.execCommand("HiliteColor", false, "yellow");
-          sel.focusNode.parentNode.id = id;
-          sel.removeAllRanges();
-          document.designMode = "off";
+          
+          var span = document.createElement("span");
+          span.id = id;
+          span.className = "hilited";
+          range.surroundContents(span);
           
           var tooltipElement = angular.element("#comment-new")[0];
           var div = angular.copy(tooltipElement);
@@ -174,16 +172,12 @@ function ($scope, $routeParams, $location, $window, $http, $compile, $timeout, R
         var startNode = contentElement.childNodes[0];
         range.setStart(startNode, comment.start);
         range.setEnd(startNode, comment.end);
-      
+        
         var id = "c" + (new Date().getTime());
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        document.designMode = "on";
-        sel.addRange(range);
-        document.execCommand("HiliteColor", false, "yellow");
-        sel.focusNode.parentNode.id = id;
-        sel.removeAllRanges();
-        document.designMode = "off";
+        var span = document.createElement("span");
+        span.id = id;
+        span.className = "hilited";
+        range.surroundContents(span);
 
         var parentElement = angular.element("#" + id)[0];
 

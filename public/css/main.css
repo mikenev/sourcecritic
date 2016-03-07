@@ -106,6 +106,10 @@ h1 {
     margin: 0;
 }
 
+.hilited {
+    background-color: yellow;
+}
+
 .line-number-column {
     float: left;
     background-color: lightgrey;
