@@ -43,7 +43,7 @@ class ReviewController extends Controller
             'file' => 'required',
         ]);
         
-        $id = uniqid();
+        $id = uniqid('', true);
         $name = $request->input('review_name');
         $file = $request->file('file');
                 
