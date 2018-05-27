@@ -9,8 +9,9 @@ class File extends Model
     public static $AcceptTypes = array(
         'text/plain',
         'text/x-asm', // some css
-	'text/x-php',
-	'text/x-Algol68'
+        'text/x-php',
+        'text/x-Algol68',
+        'text/html'
     );
     
     public static $InvalidFileNames = array(
